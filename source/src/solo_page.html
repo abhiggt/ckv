@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Chakrview</title>
+<meta name="description" content="A calm tilt-maze. Roll a marble inward, ring by ring, to the centre.">
+<meta name="theme-color" content="#efe6d8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Chakrview">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" id="favicon">
+<style>
+/*BASECSS*/
+/* ---------- Chakrview ---------- */
+.chak{padding:12px 0;border-top:1px solid var(--line)}
+.chak .ch{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.chak .ch .gl{width:30px;height:30px;flex:none}
+.chak .ch b{font:600 20px/1 var(--serif);letter-spacing:-.02em}
+.chak .ch span{font:600 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-left:auto}
+.chak .ch em{font:600 13px/1 var(--sans);font-style:normal;color:var(--accent)}
+.chak.lock{opacity:.42}
+.lvls{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.lv{aspect-ratio:1;border-radius:50%;border:0;background:var(--card2);font:600 13px/1 var(--sans);font-variant-numeric:tabular-nums;color:var(--ink);display:grid;place-items:center;padding:0}
+.lv.done{background:var(--ink);color:var(--bg)}
+.lv.cur{box-shadow:inset 0 0 0 2px var(--accent);background:var(--card)}
+.lv:disabled{opacity:.45;cursor:default}
+.marbles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0 4px}
+.mcard{border:0;border-radius:20px;background:var(--card2);padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--ink)}
+.mcard.on{background:var(--card);box-shadow:inset 0 0 0 2px var(--ink)}
+.mcard .orb{width:60px;height:60px;border-radius:50%;box-shadow:inset -6px -8px 14px rgba(0,0,0,.25),0 6px 14px rgba(0,0,0,.15);margin-bottom:4px;position:relative}
+.mcard .orb::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:3px solid var(--tyre);opacity:.9}
+.mcard b{font:600 19px/1 var(--serif);letter-spacing:-.02em}
+.mcard .tag{font:600 10.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.bars{width:100%;display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.bars div{display:flex;align-items:center;gap:6px;font:500 11px/1 var(--sans);color:var(--mut)}
+.bars div span{width:44px;text-align:left}
+.bars div i{flex:1;height:4px;border-radius:2px;background:var(--line);position:relative;overflow:hidden}
+.bars div i::after{content:'';position:absolute;inset:0;width:var(--v);background:var(--ink);border-radius:2px}
+.season{width:100%;margin-top:8px;font:500 11px/1.3 var(--sans);color:var(--mut)}
+.season i{display:block;height:4px;border-radius:2px;background:var(--line);margin-top:5px;position:relative;overflow:hidden}
+.season i::after{content:'';position:absolute;inset:0;width:var(--v);background:var(--accent)}
+.sfoot{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 0 4px;border-top:1px solid var(--line);margin-top:6px}
+.egg{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:8px 6px 4px}
+.egg .orb{width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff7d8 0 8%,#f0cf78 26%,#b98a2c 66%,#5c3d10);box-shadow:0 10px 30px rgba(120,80,20,.35)}
+.egg h3{font:600 28px/1.1 var(--serif);letter-spacing:-.02em;margin:6px 0 0}
+.egg p{margin:0;color:var(--mut);font-size:15px;line-height:1.5;max-width:340px}
+.modes{margin:0 0 12px}
+.modes button{padding:8px 14px}
+.jsub{margin:2px 0 12px;color:var(--mut);font:500 14.5px/1.45 var(--sans);max-width:300px}
+.mani{display:flex;align-items:center;gap:14px;padding:4px 0 14px}
+.mani .gem svg{width:46px;height:46px}
+.mani b{display:block;font:600 18px/1.1 var(--serif);letter-spacing:-.01em}
+.mani small{display:block;color:var(--mut);font:500 12.5px/1.4 var(--sans);margin-top:3px}
+.lv{position:relative}
+.lv i{position:absolute;right:1px;top:1px;width:9px;height:9px;color:var(--accent)}
+.lv i svg{width:100%;height:100%;display:block}
+.lv.done i{color:var(--accent)}
+.ocard .glyph.gemw{width:96px;height:96px}
+.aham{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + var(--safe-b));z-index:9;border:0;border-radius:999px;background:var(--ink);color:var(--bg);display:inline-flex;align-items:center;gap:8px;padding:9px 12px 9px 14px;font:600 12px/1 var(--sans);letter-spacing:.06em;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.aham b{letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.aham span{font-variant-numeric:tabular-nums;opacity:.8}
+.aham i{font-style:normal;opacity:.6;border-left:1px solid currentColor;padding-left:8px;margin-left:2px}
+body:not(.playing) .aham{bottom:auto;top:calc(66px + var(--safe-t))}
+</style>
+</head>
+<body>
+<canvas id="c" tabindex="0"></canvas>
+
+
+<div id="home" class="fade">
+  <div class="htop">
+    <span style="width:44px"></span>
+    <div class="badge" id="logo" aria-label="Chakrview"></div>
+    <button class="ib" id="bSettings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/><circle cx="12" cy="12" r="6.6"/></svg></button>
+  </div>
+  <div class="hbot">
+    <div class="panel">
+      <div class="seg modes" id="mSeg"><button data-m="journey">Journey</button><button data-m="relax">Relax</button></div>
+      <div class="eyebrow"><span id="jGlyph"></span><span id="jChakra"></span></div>
+      <h1 class="title" id="jTitle">Mitti</h1>
+      <div class="pips" id="jPips"></div>
+      <p class="jsub hidden" id="jSub"></p>
+      <button class="go" id="bPlay"><span id="bPlayTxt">Begin</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+      <nav class="links">
+        <button class="pill" id="bLevels"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8" fill="currentColor"/></svg>Levels</button>
+        <button class="pill" id="bMarble"><i class="sw" id="mSw"></i>Marble</button>
+        <a class="pill" id="bRace" href="duel.html"><svg viewBox="0 0 24 24"><path d="M3 9h9M5 13h9M3 17h7"/><circle cx="18" cy="13" r="3.2"/></svg>Race</a>
+      </nav>
+    </div>
+    <div class="credit">Made by <a href="https://github.com/abhiggt" target="_blank" rel="noopener">Abhiggt</a></div>
+  </div>
+</div>
+
+<div class="hud fade off" id="hud">
+  <div class="hl"><button class="btn sq" id="bPause" aria-label="Pause"><svg class="i" viewBox="0 0 24 24"><path d="M9 6v12M15 6v12"/></svg></button></div>
+  <div class="hc"><span class="trow" id="hTimeRow"><span class="time" id="hTime"></span><span class="petal" id="hPetal" title="Flow petal"><svg viewBox="0 0 24 24"><path d="M12 2.5c4.2 4.2 5.6 9 0 19-5.6-10-4.2-14.8 0-19z" fill="currentColor"/></svg></span></span><span class="lvl" id="hLbl"></span><button class="tchip hidden" id="tiltChip"></button></div>
+  <div class="hr"><div class="vseg" id="vSeg" role="group" aria-label="View">
+      <button data-v="top" aria-label="Sky view: the whole maze from above" title="Sky"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></button>
+      <button data-v="eye" aria-label="Path view: behind the marble" title="Path"><svg class="i" viewBox="0 0 24 24"><path d="M4.5 19.5L9.5 7h5l5 12.5"/><path d="M8 12.5h8"/><circle cx="12" cy="16.3" r="1.7" fill="currentColor" stroke="none"/></svg></button>
+    </div></div>
+  <div class="hb"><button class="btn sq" id="bMus" aria-label="Music on or off" title="Music"><svg class="i" viewBox="0 0 24 24"><path d="M9 17.5V6l9-2v11.5"/><circle cx="6.8" cy="17.5" r="2.4"/><circle cx="15.8" cy="15.5" r="2.4"/><path class="slash" d="M4 4l16 16"/></svg></button><button class="btn sq hidden" id="bCtl" aria-label="Switch between tilt and drag" title="Tilt or drag"><svg class="i ico-tilt" viewBox="0 0 24 24"><rect x="8.2" y="3.8" width="7.6" height="16.4" rx="2" transform="rotate(-16 12 12)"/><path d="M3.5 9.5a9 9 0 0 1 2.5-4M20.5 14.5a9 9 0 0 1-2.5 4"/></svg><svg class="i ico-drag" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><path d="M12 4v4.5M12 15.5V20M4 12h4.5M15.5 12H20"/><path d="M10.2 5.8L12 4l1.8 1.8M10.2 18.2L12 20l1.8-1.8M5.8 10.2L4 12l1.8 1.8M18.2 10.2L20 12l-1.8 1.8"/></svg></button></div>
+</div>
+<div class="limitbar hidden" id="hLimit"><i></i></div>
+<div id="thumb"><i></i></div>
+<div class="hint off" id="hint"></div>
+<div class="toast" id="toast"></div>
+<button class="aham hidden" id="aham" aria-label="Aham playtest mode. Tap to end."><b>Aham</b><span id="ahamT">30:00</span><i>End</i></button>
+<div class="chapter fade off" id="chap"><div><small id="cEye"></small><b id="cTitle"></b><span id="cLine"></span></div></div>
+
+<div class="overlay fade off" id="ovPause">
+  <div class="ocard">
+    <div class="eyebrow" id="pEye"></div>
+    <h2>Paused</h2>
+    <div class="qrow">
+      <button class="qt" id="qMusic"><span><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>Music</button>
+      <button class="qt" id="qSound"><span><svg viewBox="0 0 24 24"><path d="M4 9.5h4l5-4v13l-5-4H4z"/><path d="M16.5 9a4.5 4.5 0 0 1 0 6M19 6.5a8 8 0 0 1 0 11"/></svg></span>Sound</button>
+      <button class="qt" id="qHap"><span><svg viewBox="0 0 24 24"><rect x="8" y="3.5" width="8" height="17" rx="2"/><path d="M4 9v6M20 9v6"/></svg></span>Vibrate</button>
+      <button class="qt hidden" id="qCal"><span><svg viewBox="0 0 24 24"><path d="M3 12h4M17 12h4"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg></span>Re-level</button>
+    </div>
+    <div class="ocol">
+      <div class="orow"><button id="pResume">Resume</button></div>
+      <div class="orow"><button class="ghost" id="pRestart">Restart</button><button class="ghost" id="pSet">Settings</button><button class="ghost" id="pHome">Home</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay fade off" id="ovTut">
+  <div class="ocard tut">
+    <div class="art" id="tArt"></div>
+    <h2 id="tTitle"></h2>
+    <p id="tText"></p>
+    <div class="dots" id="tDots"></div>
+    <div class="orow"><button class="ghost" id="tSkip">Skip</button><button id="tNext">Next</button></div>
+  </div>
+</div>
+
+<div class="scrim fade off" id="scrim"></div>
+
+<div class="sheet off" id="shLevels">
+  <div class="sh"><h3>Levels</h3><button class="x" data-close aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="mani" id="maniRow"></div>
+  <div id="chakList"></div>
+</div>
+
+<div class="sheet off" id="shMarble">
+  <div class="sh"><h3>Marble</h3><button class="x" data-close aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <p class="small" style="margin:0 0 10px">Like racing tyres, each one has a feel. They grow steadier the more you roll them.</p>
+  <div class="marbles" id="marbleList"></div>
+</div>
+
+<div class="sheet off" id="shSet">
+  <div class="sh"><h3>Settings</h3><button class="x" data-close aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="grp">Play</div>
+  <div class="row"><span>Sensitivity</span><input type="range" id="sSens" min="0.5" max="1.6" step="0.05"></div>
+  <div class="row" id="invRow"><span>Invert tilt<small>Roll the other way.</small></span><button class="tog" id="sInv" aria-label="Invert tilt"></button></div>
+  <div class="row"><span>View<small>Sky shows the whole maze. Path follows the marble.</small></span><div class="seg" id="sView"></div></div>
+  <div class="row"><span>Show timer<small>Journey only. Your best times are kept either way.</small></span><button class="tog" id="sTimer" aria-label="Show timer"></button></div>
+  <div class="grp">Sound</div>
+  <div class="row"><span>Music volume</span><input type="range" id="sMusVol" min="0" max="1" step="0.05"></div>
+  <div class="row"><span>Binaural beats<small>A slow pulse under the music that settles the mind. Best with headphones.</small></span><button class="tog" id="sBeats" aria-label="Binaural beats"></button></div>
+  <div class="row"><span>Sound effects</span><button class="tog" id="sSound" aria-label="Sound effects"></button></div>
+  <div class="row"><span>Effects volume</span><input type="range" id="sSfxVol" min="0" max="1" step="0.05"></div>
+  <div class="row"><span>Vibration</span><button class="tog" id="sHap" aria-label="Vibration"></button></div>
+  <div class="grp">Display</div>
+  <div class="row"><span>Graphics</span><div class="seg" id="sQual"></div></div>
+  <div class="row"><span>Reduce motion<small>A still camera and quicker changes of view.</small></span><button class="tog" id="sRM" aria-label="Reduce motion"></button></div>
+  <div class="grp">More</div>
+  <div class="row"><span>How to play</span><button class="btnrow ghost" id="bTut">Show</button></div>
+  <div class="row hidden" id="instRow"><span>Install app<small id="instInfo">Plays full screen and offline.</small></span><button class="btnrow" id="bInstall">Install</button></div>
+  <div class="row"><span>Reset progress<small id="rstInfo">Clears levels, times and petals.</small></span><button class="btnrow ghost" id="bReset">Reset</button></div>
+  <div class="row"><span>What's new<small id="verInfo"></small></span><button class="btnrow ghost" id="bNew">Read</button></div>
+  <div class="sfoot">
+    <div class="badge" id="logoSmall" role="button" aria-label="Chakrview"></div>
+    <div class="credit">Made by <a href="https://github.com/abhiggt" target="_blank" rel="noopener">Abhiggt</a></div>
+  </div>
+</div>
+
+<div class="sheet off" id="shEgg">
+  <div class="sh"><span></span><button class="x" data-close aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="egg">
+    <div class="orb"></div>
+    <h3>The eighth chakra</h3>
+    <p>Seven chakras lead inward. The eighth is the one who made them. Chakrview was dreamt up, built and tilted a thousand times by <b>Abhiggt</b>. You found his marble.</p>
+    <div class="orow" style="width:100%;margin-top:8px"><a class="pill" href="https://github.com/abhiggt" target="_blank" rel="noopener" style="justify-content:center;box-shadow:inset 0 0 0 1.5px var(--line)">github.com/abhiggt</a></div>
+    <div class="orow" style="width:100%"><button id="bSuvarna">Roll with Suvarna</button></div>
+  </div>
+</div>
+
+<div class="sheet off" id="shNew">
+  <div class="sh"><h3>What's new</h3><button class="x" data-close aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="notes" id="newList"></div>
+</div>
+
+<div class="overlay fade off" id="ovWin">
+  <div class="ocard">
+    <div class="eyebrow" id="wEye"></div>
+    <div class="glyph hidden" id="wGlyph"></div>
+    <h2 id="wTitle"></h2>
+    <p class="sub" id="wSub"></p>
+    <div class="stats hidden" id="wStats"></div>
+    <div class="orow" id="wRow"></div>
+  </div>
+</div>
+
+<script>/*__THREE__*/</script>
+<script>
+(() => {
+'use strict';
+/*GAME*/
+})();
+</script>
+</body>
+</html>

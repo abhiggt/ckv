@@ -1,72 +1,65 @@
-<h1 align="center">chakrview</h1>
+<p align="center"><img src="media/mark.png" width="96" alt=""></p>
 
-<p align="center"><i>Indian art meets tactile play.</i><br>
-Tilt a carved board. Roll the ball. Find your way to the centre.</p>
+<h1 align="center">Chakrview</h1>
 
-<p align="center">
-  <img src="media/home.jpg" width="200" alt="Home screen">
-  <img src="media/play.jpg" width="200" alt="Top view of a Madhubani hexagon maze">
-  <img src="media/chase.jpg" width="200" alt="Chase view behind the ball">
-  <img src="media/duel.jpg" width="200" alt="1v1 duel lobby">
-</p>
+<p align="center"><b>Roll inward.</b></p>
+
+<p align="center"><a href="https://abhiggt.github.io/ckv/"><b>Play Chakrview</b></a> &nbsp;·&nbsp; <a href="https://abhiggt.github.io/ckv/duel.html"><b>Play Chakrvroom</b></a></p>
 
 ---
 
-Chakrview is a calm ball-and-maze game, a digital version of the wooden labyrinths you tilt with both hands. Tilt your phone and the ball rolls: it clicks against walls, slows in sand, slides on brass and drops into holes. It's made to pick up after a long day, at any age from 5 to 55.
+Tilt your phone. A glass marble rolls across a carved wooden board, finds a gap in the ring, and drops a little deeper. A soft bell rings. You breathe out.
 
-## The Journey
+Chakrview is a calm maze game about the journey inward. There are no coins to collect, no stars to chase and no one to beat. There is just you, a marble, and the quiet centre of every board.
 
-24 hand-tuned mazes that move from gentle to devious:
+### Seven worlds, fifty-six mazes
 
-| Board shape | Levels |
-|-------|--------|
-| Circle | 1–6 |
-| Hexagon | 7–16 |
-| Octagon | 17–24 |
+Every world has eight mazes, and every maze has a name you can say out loud: *"I'm on Patang."* As you go deeper, the boards change, the room grows darker, and the mazes start to feel alive. One ring flows, another glows, a breeze passes over, and some things sing when you touch them. Nothing is explained. You find out by going in.
 
-Every level is carved from a different Indian craft or folk art: **Sheesham, Chandan, Akhrot, Makrana marble, Neel, Bidri, Warli, Madhubani, Kolam, Gond, Kalamkari, Lippan, Pattachitra, Pichwai and Sanjhi**.
+### Something inside the glass
 
-New mechanics arrive one at a time: blocking bars, brass posts, a turning ring, sand, polished brass, dead ends and holes.
+Look closely at your marble as you play. Something in there is waiting. What it is, and what it means, is for you to discover.
 
-**The twist.** From level 6, a brass lotus closes the centre. Somewhere in the maze, often down a dead end, is a copper temple gong. Roll over it, hear it ring, and watch the lotus bloom open.
+### Journey, or just relax
 
-## Ways to play
+**Journey** takes you through every world in order. Arrive within a level's flow time and you earn a lotus petal, a quiet nod for moving well. **Relax** gives you endless gentle mazes with no clock and no holes, each one flowing into the next.
 
-- **Daily maze.** One new maze each day, the same for everyone. Keep your streak going.
-- **Relax.** Endless mazes with no clock and no holes, over a soft ambience of breeze and wind chimes.
-- **Bet your time.** Study a fresh maze, bet how many seconds you'll need, and stake cowrie shells (*kaudi*). Bolder bets pay higher odds.
-- **Challenge a friend.** Send a link to the maze you just solved. Your friend races your ghost ball on the same board.
-- **1v1 Duel.** Two phones, one room code, one big maze. Race marbles to the centre, best of three rounds.
+### Music that slows you down
 
-## Two views, one maze
+Low, warm tones hum beneath every maze, with a soft pulse woven in that grows slower as you travel deeper. Put on headphones and the game feels less like playing and more like breathing.
 
-**Top** shows the whole board so you can plan a route. **Chase** drops you behind the ball and the board turns with it. Switch any time.
+### Boards made of Indian craft
 
-## Crafted balls
+Sheesham and sandalwood, Madhubani and Gond, Lippan mirror-work, Kolam, Pichwai, Jaipur blue pottery, Makrana marble, Bidri inlay. Every maze sits on its own board.
 
-Twelve balls, each with its own weight, bounce and grip: hammered-brass *Peetal*, steel *Fauladi*, a gully *Kancha* marble, lacquered *Channapatna* wood, *Moti* pearl, *Mitti* terracotta, *Rudraksha* seed, *Meenakari* enamel, *Chandi* filigree and more. They unlock as you travel the Journey.
+### Three marbles, three feels
 
-## Art gallery
-
-Each art form has a card that fills in as you finish its levels. Open one to read where the craft comes from.
-
-## Feel
-
-- **Sound:** a soft rolling hush, gentle wall taps, and a bell each time you pass into a new ring.
-- **Touch:** on Android, light vibration as the ball crosses sand.
-- **No pressure:** no jingles and no "game over". A hole only sends you back one ring.
-
-## Controls
-
-| | Phone | Computer |
-|---|---|---|
-| Roll | Tilt the phone, or drag | Arrow keys / WASD, or drag |
-| Switch view | Camera button | `V` |
-| Restart | ↺ | `R` |
-| Re-level tilt | ◎ | — |
-
-Chakrview installs like an app on your home screen and plays offline. Rooms in the Duel need the internet to connect.
+**Kancha** is glass, soft and grippy. **Peetal** is brass and balanced. **Fauladi** is steel, quick and slippery. Like a good pair of shoes, each one grows steadier the more you use it.
 
 ---
 
-<p align="center"><sub>Built with three.js · Duel rooms by PeerJS · No ads, no tracking, progress stays on your device.</sub></p>
+<h2 align="center">Chakrvroom</h2>
+
+<p align="center"><b>Race the enemies within.</b></p>
+
+Chakrvroom is Chakrview's fast, loud sibling. Four marbles line up under five red lights. When the lights go out, you race laps around a carved circuit, through chicanes and past brass bumpers. On the final lap a gate swings open into a maze, and the first marble to reach the centre wins.
+
+**Six tracks, six enemies.** Start with **Krodh**, anger, loud and easy to spot. Then come **Irshya** (envy), **Kaam** (desire), **Lobh** (greed) and **Moh** (attachment). Last of all comes **Ahankar**, ego, the hardest of them all.
+
+**Rivals with a temper.** Jump into a quick race against three of five rivals. Jhatka bolts down the straights, Nazar never misses a line, and Chaska takes every corner greedily. Shor is fast but wild, and Dhuan drifts in when you least expect it. If they all finish before you, you can still choose to complete your journey.
+
+**Bring your friends.** Open a room, pick a four-letter code (your name works), and share the link. Friends join from anywhere, on any network.
+
+---
+
+### Good to know
+
+- **Controls:** tilt your phone, or tap the button at the bottom right while playing to switch to dragging. On a computer, use the arrow keys.
+- **Two views:** *Sky* shows the whole maze from above. *Path* puts you right behind the marble.
+- **Easy to pick up:** a short guide opens on first play. Pause any time from the top left, and turn the music on or off from the bottom left.
+- **Works offline:** add it to your home screen and play without the internet.
+- **Private by design:** no ads, no accounts and no tracking. Your progress stays on your phone.
+
+See what's new in [CHANGELOG.md](CHANGELOG.md).
+
+<p align="center"><sub>Made by <a href="https://github.com/abhiggt">Abhiggt</a> · Version 1.0.0</sub></p>

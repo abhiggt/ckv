@@ -1,6 +1,6 @@
 /* Chakrview service worker — offline play + quiet updates.
-   Bump VERSION whenever you upload a new index.html. */
-const VERSION = 'chakrview-3';
+   Bump VERSION whenever you upload a new index.html or duel.html. */
+const VERSION = 'chakrview-1.0.0';
 const ASSETS = ['./', './index.html', './duel.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

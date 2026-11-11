@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Chakrvroom</title>
+<meta name="description" content="Marble racing on carved boards. Laps of the circuit, then the maze to the centre. Up to four players.">
+<meta name="theme-color" content="#1b1c28">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Chakrvroom">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" id="favicon">
+<style>
+/*BASECSS*/
+/* ---------- Chakrvroom: night-race palette ---------- */
+:root{--bg:#1b1c28;--ink:#f1ece4;--mut:rgba(241,236,228,.6);--card:rgba(40,44,62,.88);--card2:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);--accent:#e5553a}
+.trk{display:flex;align-items:center;gap:10px;width:100%;justify-content:center}
+.trk .ib{width:40px;height:40px;flex:none}
+.trk .tt{min-width:0;flex:1;text-align:center}
+.trk .title{font-size:30px}
+.turf{font:600 12.5px/1.35 var(--sans);color:var(--mut);margin:2px 0 8px}
+.turf b{color:var(--ink);font-weight:700}
+.me{display:flex;gap:10px;align-items:center;width:100%;justify-content:center;margin:2px 0 6px}
+.tag{width:86px;border:0;border-radius:14px;background:var(--card2);color:var(--ink);font:600 20px/1 var(--serif);letter-spacing:.14em;text-align:center;text-transform:uppercase;padding:12px 6px;outline:none;-webkit-user-select:text;user-select:text}
+.tag:focus{box-shadow:inset 0 0 0 2px var(--accent)}
+.chips{display:flex;gap:6px}
+.chip{border:0;border-radius:14px;background:var(--card2);padding:7px 10px 7px 7px;display:flex;align-items:center;gap:7px;font:600 13px/1 var(--sans);color:var(--ink)}
+.chip.on{box-shadow:inset 0 0 0 2px var(--ink)}
+.chip .orb{width:26px;height:26px;border-radius:50%;box-shadow:0 0 0 2.5px var(--tyre),inset -3px -4px 6px rgba(0,0,0,.25)}
+.code{font:600 46px/1 var(--serif);letter-spacing:.22em;padding-left:.22em;margin:2px 0 6px}
+.cin{display:flex;gap:8px;width:100%}
+.cin input{flex:1;min-width:0;border:0;border-radius:999px;background:var(--card2);color:var(--ink);font:600 24px/1 var(--serif);letter-spacing:.3em;text-align:center;text-transform:uppercase;padding:14px;outline:none;-webkit-user-select:text;user-select:text}
+.cin .go{min-width:0;padding:14px 22px}
+.plist{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;margin:4px 0 10px}
+.slot{border-radius:16px;background:var(--card2);padding:10px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:6px;font:600 13px/1 var(--sans);min-height:76px;justify-content:center}
+.slot .orb{width:26px;height:26px;border-radius:50%;box-shadow:0 0 0 2.5px var(--pc)}
+.slot.empty{opacity:.4;font-weight:500}
+.slot small{font:600 10px/1 var(--sans);letter-spacing:.12em;color:var(--mut)}
+.dstat{font:500 13.5px/1.4 var(--sans);color:var(--mut);min-height:19px;margin-top:6px;max-width:340px}
+.lights{position:fixed;left:50%;top:calc(104px + var(--safe-t));transform:translateX(-50%);display:flex;gap:10px;padding:10px 14px;border-radius:999px;background:rgba(15,12,18,.72);z-index:5;transition:opacity .3s}
+.lights i{width:20px;height:20px;border-radius:50%;background:#3a2f33;box-shadow:inset 0 0 0 2px rgba(0,0,0,.4)}
+.lights i.on{background:#ff3b2b;box-shadow:0 0 14px #ff3b2b,inset 0 0 0 2px rgba(0,0,0,.2)}
+.big{font:600 30px/1 var(--serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.pos{display:inline-flex;align-items:baseline;gap:6px}
+.hud .tm{letter-spacing:.06em;color:var(--ink);opacity:.8}
+.pos small{font:600 13px/1 var(--sans);color:var(--mut)}
+#tags{position:fixed;inset:0;pointer-events:none;z-index:2}
+#tags b{position:absolute;left:0;top:0;font:700 11px/1 var(--sans);letter-spacing:.1em;padding:4px 6px;border-radius:6px;color:#16121a;white-space:nowrap;transform:translate(-50%,-140%)}
+.stand{width:100%;display:flex;flex-direction:column;gap:6px;margin:6px 0 18px}
+.stand div{display:flex;align-items:center;gap:10px;background:var(--card2);border-radius:14px;padding:10px 12px;font:600 15px/1 var(--sans)}
+.stand .p{width:26px;font:600 17px/1 var(--serif)}
+.stand .d{width:12px;height:12px;border-radius:50%}
+.stand .t{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mut)}
+.stand .me{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.stand small{font:600 10px/1 var(--sans);letter-spacing:.12em;color:var(--mut);margin-left:6px}
+.laps{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 12px;margin:-8px 0 16px;font:600 13px/1.3 var(--sans);color:var(--mut);font-variant-numeric:tabular-nums}
+.laps b{color:var(--ink)}
+.laps .fl{color:var(--accent)}
+.rank{display:flex;justify-content:center;gap:4px;margin:8px 0 2px}
+.rank i{width:16px;height:4px;border-radius:2px;background:var(--line)}
+.rank i.on{background:var(--accent)}
+.cue{position:fixed;left:50%;top:calc(150px + var(--safe-t));transform:translate(-50%,0);font:600 34px/1 var(--serif);letter-spacing:-.02em;color:var(--ink);text-shadow:0 2px 14px rgba(0,0,0,.4);pointer-events:none;z-index:5;opacity:0;transition:opacity .25s,transform .35s}
+.cue.on{opacity:1;transform:translate(-50%,-6px)}
+.cue.up{color:#7ee0a1}.cue.dn{color:#ff8a6e}
+</style>
+</head>
+<body>
+<canvas id="c" tabindex="0"></canvas>
+<div id="tags"></div>
+
+<div id="home" class="fade">
+  <div class="htop">
+    <a class="ib" href="./" aria-label="Back to Chakrview" title="Chakrview"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <div class="badge" id="logo" aria-label="Chakrvroom"></div>
+    <button class="ib" id="bSettings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/><circle cx="12" cy="12" r="6.6"/></svg></button>
+  </div>
+  <div class="hbot">
+    <div class="panel">
+      <div class="trk">
+        <button class="ib" id="tPrev" aria-label="Previous track"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="tt"><div class="eyebrow" id="tShape">Circuit</div><h1 class="title" id="tName">Track</h1><div class="rank" id="tRank"></div></div>
+        <button class="ib" id="tNext" aria-label="Next track"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+      <div class="turf" id="tTurf"></div>
+      <div class="me"><input class="tag" id="tag" maxlength="3" placeholder="YOU" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Your three-letter tag"><div class="chips" id="ballRow"></div></div>
+      <div id="pMain" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:6px">
+        <button class="go" id="bBots">Quick race</button>
+        <nav class="links"><button class="pill" id="bCreate">Create a room</button><button class="pill" id="bJoin">Join with a code</button></nav>
+      </div>
+      <div id="pCreate" class="hidden" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="eyebrow">Your room code</div>
+        <div class="cin"><input id="codeNew" maxlength="4" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" placeholder="CODE" aria-label="Room code"><button class="go" id="bOpen">Open</button></div>
+        <p class="small" style="margin:0;text-align:center">Keep this one, or type any four letters or numbers of your own.</p>
+        <nav class="links"><button class="pill" id="bNewCode">Shuffle</button><button class="pill" id="bCreateBack">Back</button></nav>
+      </div>
+      <div id="pJoin" class="hidden" style="width:100%;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="cin"><input id="codeIn" maxlength="4" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" placeholder="CODE" aria-label="Room code"><button class="go" id="bGoJoin">Join</button></div>
+        <button class="pill" id="bJoinBack">Back</button>
+      </div>
+      <div id="pRoom" class="hidden" style="width:100%;display:flex;flex-direction:column;align-items:center">
+        <div class="eyebrow">Room code</div>
+        <div class="code" id="codeTxt">····</div>
+        <div class="plist" id="plist"></div>
+        <button class="go" id="bStart">Start the race</button>
+        <nav class="links"><button class="pill" id="bShare">Share link</button><button class="pill" id="bLeave">Leave</button></nav>
+      </div>
+      <div class="dstat" id="dStat"></div>
+    </div>
+    <div class="credit">Made by <a href="https://github.com/abhiggt" target="_blank" rel="noopener">Abhiggt</a></div>
+  </div>
+</div>
+
+<div class="hud fade off" id="hud">
+  <div class="hl"><button class="btn sq" id="bPause" aria-label="Pause"><svg class="i" viewBox="0 0 24 24"><path d="M9 6v12M15 6v12"/></svg></button></div>
+  <div class="hc"><span class="pos"><span class="big" id="hPos">P1</span><small id="hOf">/ 4</small></span><span class="lvl" id="hLap">Lap 1 / 3</span><span class="lvl tm" id="hTime"></span><button class="tchip hidden" id="tiltChip"></button></div>
+  <div class="hr"><div class="vseg" id="vSeg" role="group" aria-label="View">
+      <button data-v="top" aria-label="Sky view: the whole track from above" title="Sky"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></button>
+      <button data-v="eye" aria-label="Path view: behind your marble" title="Path"><svg class="i" viewBox="0 0 24 24"><path d="M4.5 19.5L9.5 7h5l5 12.5"/><path d="M8 12.5h8"/><circle cx="12" cy="16.3" r="1.7" fill="currentColor" stroke="none"/></svg></button>
+    </div></div>
+  <div class="hb"><button class="btn sq" id="bMus" aria-label="Music on or off" title="Music"><svg class="i" viewBox="0 0 24 24"><path d="M9 17.5V6l9-2v11.5"/><circle cx="6.8" cy="17.5" r="2.4"/><circle cx="15.8" cy="15.5" r="2.4"/><path class="slash" d="M4 4l16 16"/></svg></button><button class="btn sq hidden" id="bCtl" aria-label="Switch between tilt and drag" title="Tilt or drag"><svg class="i ico-tilt" viewBox="0 0 24 24"><rect x="8.2" y="3.8" width="7.6" height="16.4" rx="2" transform="rotate(-16 12 12)"/><path d="M3.5 9.5a9 9 0 0 1 2.5-4M20.5 14.5a9 9 0 0 1-2.5 4"/></svg><svg class="i ico-drag" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/><path d="M12 4v4.5M12 15.5V20M4 12h4.5M15.5 12H20"/><path d="M10.2 5.8L12 4l1.8 1.8M10.2 18.2L12 20l1.8-1.8M5.8 10.2L4 12l1.8 1.8M18.2 10.2L20 12l-1.8 1.8"/></svg></button></div>
+</div>
+<div class="cue" id="cue"></div>
+<div class="lights off" id="lights"><i></i><i></i><i></i><i></i><i></i></div>
+<div id="thumb"><i></i></div>
+<div class="hint off" id="hint"></div>
+<div class="toast" id="toast"></div>
+<div class="scrim fade off" id="scrim"></div>
+
+<div class="sheet off" id="shSet">
+  <div class="sh"><h3>Settings</h3><button class="x" data-close aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="grp">Race</div>
+  <div class="row"><span>Laps<small>The host's choice is used in rooms.</small></span><div class="seg" id="sLaps"></div></div>
+  <div class="row"><span>View<small>Sky shows the whole track. Path follows your marble.</small></span><div class="seg" id="sView"></div></div>
+  <div class="row"><span>Sensitivity</span><input type="range" id="sSens" min="0.5" max="1.6" step="0.05"></div>
+  <div class="row" id="invRow"><span>Invert tilt<small>Roll the other way.</small></span><button class="tog" id="sInv" aria-label="Invert tilt"></button></div>
+  <div class="grp">Sound</div>
+  <div class="row"><span>Music volume</span><input type="range" id="sMusVol" min="0" max="1" step="0.05"></div>
+  <div class="row"><span>Sound effects<small>Rolling, the hum of speed, bumps and the lights.</small></span><button class="tog" id="sSound" aria-label="Sound effects"></button></div>
+  <div class="row"><span>Effects volume</span><input type="range" id="sSfxVol" min="0" max="1" step="0.05"></div>
+  <div class="row"><span>Vibration</span><button class="tog" id="sHap" aria-label="Vibration"></button></div>
+  <div class="grp">Display</div>
+  <div class="row"><span>Graphics</span><div class="seg" id="sQual"></div></div>
+  <div class="row"><span>Reduce motion<small>No camera shake, a still lobby camera.</small></span><button class="tog" id="sRM" aria-label="Reduce motion"></button></div>
+  <div class="grp">More</div>
+  <div class="row"><span>How to race</span><button class="btnrow ghost" id="bTut">Show</button></div>
+  <div class="row"><span>Your tag<small>Three letters, shown above your marble.</small></span><span class="small" id="sTagShow"></span></div>
+  <p class="small">Rooms meet through public relay servers, so they work on any network. Up to four marbles per room; a room code is four letters or numbers.</p>
+  <div class="row"><span>What's new<small id="verInfo"></small></span><button class="btnrow ghost" id="bNew">Read</button></div>
+  <div class="sfoot"><div class="credit">Made by <a href="https://github.com/abhiggt" target="_blank" rel="noopener">Abhiggt</a></div></div>
+</div>
+
+<div class="overlay fade off" id="ovPause">
+  <div class="ocard">
+    <div class="eyebrow" id="pEye"></div>
+    <h2>Paused</h2>
+    <p class="sub hidden" id="pNote">Online races keep going while you're here.</p>
+    <div class="qrow">
+      <button class="qt" id="qMusic"><span><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>Music</button>
+      <button class="qt" id="qSound"><span><svg viewBox="0 0 24 24"><path d="M4 9.5h4l5-4v13l-5-4H4z"/><path d="M16.5 9a4.5 4.5 0 0 1 0 6M19 6.5a8 8 0 0 1 0 11"/></svg></span>Sound</button>
+      <button class="qt" id="qHap"><span><svg viewBox="0 0 24 24"><rect x="8" y="3.5" width="8" height="17" rx="2"/><path d="M4 9v6M20 9v6"/></svg></span>Vibrate</button>
+      <button class="qt hidden" id="qCal"><span><svg viewBox="0 0 24 24"><path d="M3 12h4M17 12h4"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg></span>Re-level</button>
+    </div>
+    <div class="ocol">
+      <div class="orow"><button id="pResume">Resume</button></div>
+      <div class="orow"><button class="ghost" id="pRestart">Restart</button><button class="ghost" id="pSet">Settings</button><button class="ghost" id="pLeave">Leave</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay fade off" id="ovTut">
+  <div class="ocard tut">
+    <div class="art" id="tArt"></div>
+    <h2 id="tTitle"></h2>
+    <p id="tText"></p>
+    <div class="dots" id="tDots"></div>
+    <div class="orow"><button class="ghost" id="tSkip">Skip</button><button id="tNext2">Next</button></div>
+  </div>
+</div>
+
+<div class="sheet off" id="shNew">
+  <div class="sh"><h3>What's new</h3><button class="x" data-close aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="notes" id="newList"></div>
+</div>
+
+<div class="overlay fade off" id="ovLost">
+  <div class="ocard">
+    <div class="eyebrow" id="lEye"></div>
+    <h2>You lost</h2>
+    <p class="sub">But don't worry. Want to complete your journey?</p>
+    <div class="orow"><button class="ghost" id="lNo">No</button><button id="lYes">Yes</button></div>
+  </div>
+</div>
+
+<div class="overlay fade off" id="ovWin">
+  <div class="ocard">
+    <div class="eyebrow" id="wEye"></div>
+    <h2 id="wTitle"></h2>
+    <div class="stand" id="wStand"></div>
+    <div class="laps hidden" id="wLaps"></div>
+    <p class="sub" id="wSub"></p>
+    <div class="orow" id="wRow"></div>
+  </div>
+</div>
+
+<script>/*__THREE__*/</script>
+<script>
+(() => {
+'use strict';
+/*GAME*/
+})();
+</script>
+</body>
+</html>
